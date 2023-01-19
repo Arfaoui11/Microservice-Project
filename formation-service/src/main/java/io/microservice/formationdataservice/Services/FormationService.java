@@ -26,7 +26,7 @@ public class FormationService implements IFormationService{
 
     @Override
     public Formation ajouterEtAffecterFormationAFormateur(Formation formation, Integer idFormateur) {
-     User user = restTemplate.getForObject("http://user-data-service/users/"+idFormateur, User.class);
+     User user = restTemplate.getForObject("http://user-data-service/api/users/"+idFormateur, User.class);
      System.out.println(user);
      formation.setFormateurId(user.getId());
      return iFormationRepo.save(formation);
