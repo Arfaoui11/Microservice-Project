@@ -37,13 +37,12 @@ public class UserService implements IUserService{
         List<User> users = iUserRepo.findAll();
         Formation[] courses = restTemplate.getForObject("http://formation-data-service/formations", Formation[].class);
         List<Formation> courseList = Arrays.stream(courses).toList();
+       // return users.stream().map(user -> user.builder().formations(courseList.stream().filter(f -> Objects.equals(f.getFormateurId(), user.getId())).toList()).build()).toList();
         return users.stream().map(user ->
         {
            // Formation[] usersss = restTemplate.getForObject("http://formation-data-service/formations/user/"+user.getId(), Formation[].class);
            // List<Formation> userList = Arrays.stream(usersss).toList();
-            List<Formation> listF = courseList.stream().filter(f -> Objects.equals(f.getFormateurId(), user.getId())).toList();
-
-            user.setFormations(listF);
+            user.setFormations(courseList.stream().filter(f -> Objects.equals(f.getFormateurId(), user.getId())).toList());
             return user;
         }).collect(Collectors.toList());
     }
