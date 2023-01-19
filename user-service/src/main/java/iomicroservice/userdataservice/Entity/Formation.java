@@ -38,7 +38,7 @@ public class Formation {
     private Integer likes;
     private Integer dislikes;
 
-    private Integer userId;
+    private Integer formateurId;
 
     @Transient
     private List<Quiz> quizzes = new ArrayList<>();

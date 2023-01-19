@@ -12,7 +12,9 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -33,11 +35,21 @@ public class UserService implements IUserService{
     @Override
     public List<User> getAllUser() {
         List<User> users = iUserRepo.findAll();
+        Formation[] courses = restTemplate.getForObject("http://formation-data-service/formations", Formation[].class);
+        List<Formation> courseList = Arrays.stream(courses).toList();
         return users.stream().map(user ->
         {
-            Formation[] usersss = restTemplate.getForObject("http://formation-data-service/formations/user/"+user.getId(), Formation[].class);
-            List<Formation> userList = Arrays.stream(usersss).toList();
-            user.setFormations(userList);
+           // Formation[] usersss = restTemplate.getForObject("http://formation-data-service/formations/user/"+user.getId(), Formation[].class);
+           // List<Formation> userList = Arrays.stream(usersss).toList();
+            List<Formation> listF = new ArrayList<>();
+             courseList.stream().map(f -> {
+                if (Objects.equals(f.getFormateurId(), user.getId()))
+                {
+                    listF.add(f);
+                }
+                return listF;
+            }).collect(Collectors.toList());
+            user.setFormations(listF);
             return user;
         }).collect(Collectors.toList());
     }
