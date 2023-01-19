@@ -41,14 +41,8 @@ public class UserService implements IUserService{
         {
            // Formation[] usersss = restTemplate.getForObject("http://formation-data-service/formations/user/"+user.getId(), Formation[].class);
            // List<Formation> userList = Arrays.stream(usersss).toList();
-            List<Formation> listF = new ArrayList<>();
-             courseList.stream().map(f -> {
-                if (Objects.equals(f.getFormateurId(), user.getId()))
-                {
-                    listF.add(f);
-                }
-                return listF;
-            }).collect(Collectors.toList());
+            List<Formation> listF = courseList.stream().filter(f -> Objects.equals(f.getFormateurId(), user.getId())).toList();
+
             user.setFormations(listF);
             return user;
         }).collect(Collectors.toList());
