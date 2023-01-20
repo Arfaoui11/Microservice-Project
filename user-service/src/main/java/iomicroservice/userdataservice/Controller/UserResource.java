@@ -28,7 +28,6 @@ public class UserResource {
        // User user1 = userService.saveUser(formateur);
        return userService.saveUser(formateur);
        // return ResponseEntity.status(HttpStatus.CREATED).body(user1);
-
     }
 
     @GetMapping("/{userid}")
@@ -44,7 +43,6 @@ public class UserResource {
     public void deleteUser( @PathVariable(name = "userid") Integer userid)
     {
         userService.deleteUser(userid);
-
     }
 
     @GetMapping()
