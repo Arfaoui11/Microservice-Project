@@ -1,0 +1,5 @@
+FROM openjdk:17
+
+ADD target/formation-service.jar formation-service.jar
+
+ENTRYPOINT ["java","-jar","/formation-service.jar"]
