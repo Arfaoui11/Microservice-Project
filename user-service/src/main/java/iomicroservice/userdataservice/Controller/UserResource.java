@@ -2,13 +2,13 @@ package iomicroservice.userdataservice.Controller;
 
 
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import iomicroservice.userdataservice.Entity.User;
 import iomicroservice.userdataservice.Services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 
 import java.util.List;
@@ -32,6 +32,7 @@ public class UserResource {
 
     @GetMapping("/{userid}")
     @ResponseBody
+
     public User getSingleUser(@PathVariable(name = "userid") Integer userid)
     {
        // User user = userService.getUser(userid);
@@ -40,6 +41,7 @@ public class UserResource {
     }
 
     @DeleteMapping("/{userid}")
+
     public void deleteUser( @PathVariable(name = "userid") Integer userid)
     {
         userService.deleteUser(userid);
@@ -47,12 +49,17 @@ public class UserResource {
 
     @GetMapping()
     @ResponseBody
+    @CircuitBreaker(name = "user")
+    //@TimeLimiter(name = "user")
+    //@Retry(name = "user")
     public List<User> getAllUsers()
     {
         List<User> list = userService.getAllUser();
         //return ResponseEntity.ok(list);
         return list;
     }
+
+
 
 
 }

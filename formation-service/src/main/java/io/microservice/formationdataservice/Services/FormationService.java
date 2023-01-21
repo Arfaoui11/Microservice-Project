@@ -5,8 +5,10 @@ import io.microservice.formationdataservice.Entity.User;
 import io.microservice.formationdataservice.Exceptions.ResourceNotFoundException;
 import io.microservice.formationdataservice.Repository.IFormationRepo;
 import io.microservice.formationdataservice.Repository.IUserRepo;
+import io.microservice.formationdataservice.event.FormationPlaceEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,12 +25,15 @@ public class FormationService implements IFormationService{
 
     @Autowired
     private IFormationRepo iFormationRepo;
+    
+    @Autowired
+    private KafkaTemplate<String,FormationPlaceEvent> kafkaTemplate;
 
     @Override
     public Formation ajouterEtAffecterFormationAFormateur(Formation formation, Integer idFormateur) {
      User user = restTemplate.getForObject("http://user-data-service/api/users/"+idFormateur, User.class);
-     System.out.println(user);
      formation.setFormateurId(user.getId());
+        kafkaTemplate.send("notificationTopic",new FormationPlaceEvent(formation.getTitle()));
      return iFormationRepo.save(formation);
     }
 
