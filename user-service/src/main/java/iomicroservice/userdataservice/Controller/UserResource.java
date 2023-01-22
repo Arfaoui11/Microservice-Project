@@ -1,10 +1,7 @@
 package iomicroservice.userdataservice.Controller;
 
 
-
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import io.github.resilience4j.retry.annotation.Retry;
-import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import iomicroservice.userdataservice.Entity.User;
 import iomicroservice.userdataservice.Services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;

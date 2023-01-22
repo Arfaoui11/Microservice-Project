@@ -35,7 +35,7 @@ public class UserService implements IUserService{
     @Override
     public List<User> getAllUser() {
         List<User> users = iUserRepo.findAll();
-        Formation[] courses = restTemplate.getForObject("http://formation-data-service/api/formations", Formation[].class);
+        Formation[] courses = restTemplate.getForObject("http://formation-service/api/formations", Formation[].class);
         List<Formation> courseList = Arrays.stream(courses).toList();
        // return users.stream().map(user -> user.builder().formations(courseList.stream().filter(f -> Objects.equals(f.getFormateurId(), user.getId())).toList()).build()).toList();
         return users.stream().map(user ->
@@ -51,7 +51,7 @@ public class UserService implements IUserService{
     public User getUser(Integer id) {
         User user =  iUserRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("User with given id not found on server !!"));
 
-        Formation[] users = restTemplate.getForObject("http://formation-data-service/api/formations/user/"+user.getId(), Formation[].class);
+        Formation[] users = restTemplate.getForObject("http://formation-service/api/formations/user/"+user.getId(), Formation[].class);
         List<Formation> userList = Arrays.stream(users).toList();
         user.setFormations(userList);
         return user;

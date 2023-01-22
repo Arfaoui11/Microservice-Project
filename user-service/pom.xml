@@ -74,5 +74,8 @@
             <artifactId>spring-kafka</artifactId>
         </dependency>
     </dependencies>
+    <build>
+        <finalName>user-service</finalName>
+    </build>
 
 </project>
